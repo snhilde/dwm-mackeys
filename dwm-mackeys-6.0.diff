@@ -1,0 +1,54 @@
+diff --git a/config.def.h b/config.def.h
+index 77ff358..c9747c0 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -48,6 +48,17 @@ static const Layout layouts[] = {
+ /* commands */
+ static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+ static const char *termcmd[]  = { "uxterm", NULL };
++static const char *brightness_down[] = { "/usr/bin/sudo", "xbacklight", "-ctrl", "nvidia_backlight", "-dec", "20", NULL };
++static const char *brightness_up[] = { "/usr/bin/sudo", "xbacklight", "-ctrl", "nvidia_backlight", "-inc", "20", NULL };
++static const char *kbd_backlight_down[] = { "/usr/bin/sudo", "xbacklight", "-ctrl", "smc::kbd_backlight", "-dec", "20", NULL };
++static const char *kbd_backlight_up[] = { "/usr/bin/sudo", "xbacklight", "-ctrl", "smc::kbd_backlight", "-inc", "20", NULL };
++static const char *audio_previous[] = { "/usr/bin/mocp", "-r", NULL };
++static const char *audio_toggle[] = { "/usr/bin/mocp", "-G", NULL };
++static const char *audio_next[] = { "/usr/bin/mocp", "-f", NULL };
++static const char *volume_toggle[] = { "/usr/bin/amixer", "-q", "set", "Master", "toggle", NULL };
++static const char *volume_dec[] = { "/usr/bin/amixer", "-q", "set", "Master", "10%-", "unmute", NULL };
++static const char *volume_inc[] = { "/usr/bin/amixer", "-q", "set", "Master", "10%+", "unmute", NULL };
++static const char *eject[] = { "/usr/bin/eject", NULL };
+ 
+ static Key keys[] = {
+ 	/* modifier                     key        function        argument */
+@@ -74,6 +85,19 @@ static Key keys[] = {
+ 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+ 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
++	{ 0,         XF86XK_MonBrightnessDown,     spawn,          {.v = brightness_down } },
++	{ 0,         XF86XK_MonBrightnessUp,       spawn,          {.v = brightness_up } },
++	{ 0,         XF86XK_LaunchA,               spawn,          {.v = dmenucmd } },
++	{ 0,         XF86XK_LaunchB,               spawn,          {.v = dmenucmd } },
++	{ 0,         XF86XK_KbdBrightnessDown,     spawn,          {.v = kbd_backlight_down } },
++	{ 0,         XF86XK_KbdBrightnessUp,       spawn,          {.v = kbd_backlight_up } },
++	{ 0,         XF86XK_AudioPrev,             spawn,          {.v = audio_previous } },
++	{ 0,         XF86XK_AudioPlay,             spawn,          {.v = audio_toggle } },
++	{ 0,         XF86XK_AudioNext,             spawn,          {.v = audio_next } },
++	{ 0,         XF86XK_AudioMute,             spawn,          {.v = volume_toggle } },
++	{ 0,         XF86XK_AudioLowerVolume,      spawn,          {.v = volume_dec } },
++	{ 0,         XF86XK_AudioRaiseVolume,      spawn,          {.v = volume_inc } },
++	{ 0,         XF86XK_Eject,                 spawn,          {.v = eject } },
+ 	TAGKEYS(                        XK_1,                      0)
+ 	TAGKEYS(                        XK_2,                      1)
+ 	TAGKEYS(                        XK_3,                      2)
+diff --git a/dwm.c b/dwm.c
+index 1d78655..8236b95 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -36,6 +36,7 @@
+ #include <X11/Xlib.h>
+ #include <X11/Xproto.h>
+ #include <X11/Xutil.h>
++#include <X11/XF86keysym.h>
+ #ifdef XINERAMA
+ #include <X11/extensions/Xinerama.h>
+ #endif /* XINERAMA */
