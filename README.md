@@ -11,7 +11,7 @@ That's it. If anything failed, then fire up your preferred editor and get those 
 
 ## Requirements
 * For the media control buttons, install `mocp`.
-* For screen and keyboard backlight control, install the appropriate driver. For me, it is [`nvidia-bl`](https://aur.archlinux.org/packages/nvidia-bl/) from the AUR. If you have a different driver, you might need to change the device that xbacklight controls in your `config.def.h` / `config.h`.
+* For screen and keyboard backlight control, install the appropriate driver. For me, it is [`nvidia-bl`](https://aur.archlinux.org/packages/nvidia-bl/) from the AUR. If you have a different driver, you might need to change the device that xbacklight controls in your `config.def.h`/`config.h`.
 * Add these lines to your sudoers file:
 	* `user host= NOPASSWD: /usr/bin/xbacklight -ctrl smc*`
 	* `user host= NOPASSWD: /usr/bin/xbacklight -ctrl nvidia_backlight -*`
