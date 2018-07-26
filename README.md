@@ -15,7 +15,7 @@ That's it. If anything failed, then fire up your preferred editor and get those 
 * Add these lines to your sudoers file:
 	* `user host= NOPASSWD: /usr/bin/xbacklight -ctrl smc*`
 	* `user host= NOPASSWD: /usr/bin/xbacklight -ctrl nvidia_backlight -*`
-	* `user` is your username and `host` is the hostname of your computer (which you can find in /etc/hostname). Again, you might need to change the device name (`smc` and `nvidia_backlight`). Don't forget the trailing dash in the second line before the wildcard asterisk.
+	* where `user` is your username and `host` is the hostname of your computer (which you can find in /etc/hostname). Again, you might need to change the device name (`smc` and `nvidia_backlight`). Don't forget the trailing dash in the second line before the wildcard asterisk.
 
 ### Author
 Hilde N.
